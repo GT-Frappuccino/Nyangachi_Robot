@@ -3,21 +3,17 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 
-#define the pin that goes to the circuit
 light_sensor = 4
 
 def rc_time (light_sensor):
     count = 0
   
-    #Output on the pin for 
     GPIO.setup(light_sensor, GPIO.OUT)
     GPIO.output(light_sensor, GPIO.LOW)
-    time.sleep(1)
+    time.sleep(0.5)
 
-    #Change the pin back to input
     GPIO.setup(light_sensor, GPIO.IN)
   
-    #Count until the pin goes high
     while (GPIO.input(light_sensor) == GPIO.LOW):
         count += 1
 
@@ -29,7 +25,14 @@ t = time.time()
 time_local = time.localtime(t)
 hour = time_local.tm_hour
 
-if ((hour > 14) && (light_count < 60)) :
-    print("go home") # spreker
-
-GPIO.cleanup()
+try:
+    while True:
+        if ((hour > 14) and (rc_time(light_Sensor) < 50)) :
+           print("Go Home") # spreker
+           print rc_time(light_Sensor)
+        else : 
+            print("It's Okay")
+            print rc_time(light_Sensor)
+except KeyboardInterrupt:
+    pass
+finally: GPIO.cleanup()

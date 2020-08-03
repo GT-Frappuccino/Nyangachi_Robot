@@ -27,12 +27,12 @@ hour = time_local.tm_hour
 
 try:
     while True:
-        if ((hour > 14) and (rc_time(light_Sensor) < 50)) :
+        if ((hour > 14) and (rc_time(light_sensor) < 50)) :
            print("Go Home") # spreker
-           print rc_time(light_Sensor)
+           print rc_time(light_sensor)
         else : 
             print("It's Okay")
-            print rc_time(light_Sensor)
+            print rc_time(light_sensor)
 except KeyboardInterrupt:
     pass
 finally: GPIO.cleanup()

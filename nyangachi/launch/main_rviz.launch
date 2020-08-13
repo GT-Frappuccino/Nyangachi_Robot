@@ -1,0 +1,17 @@
+<launch>
+
+  <param command="$(find xacro)/xacro --inorder '$(find nyangachi)/urdf/main_nyang.xacro'" name="robot_description" />
+
+  <!-- Combine joint values -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+
+  <!-- Show in Rviz   -->
+  <node name="rviz" pkg="rviz" type="rviz" />
+  <!-- <node name="rviz" pkg="rviz" type="rviz"  args="-d $(find  nyangachi)/urnch/config.rviz"/> -->
+  <!-- send joint values -->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="joint-state-publisher-gui" value="True"/>
+
+  </node>
+
+</launch>

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<robot>
+    <macro name="link_forearm" params="name">
+        <link name="${name}">
+            <!-- <inertial>
+              <mass value="0.2"/>
+              <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+              <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
+            </inertial> -->
+            <collision name="${name}_collision">
+                 <origin xyz="0 0 0" rpy="3.14 0 0"/>
+              <geometry>
+                <box size="0.05 0.05 0.3"/>
+              </geometry>
+            </collision>
+            <visual name="${name}_visual">
+                <origin xyz="0 0 0" rpy="3.14 0 0"/>
+                <geometry>
+                <box size="0.05 0.05 0.3"/>
+                </geometry>
+                <material name="blue">
+                  <color rgba="0 0 1 1"/>
+                </material>
+            </visual>
+        </link>
+    </macro>
+
+   <macro name="link_thigh" params="name">
+        <link name="${name}">
+            <!-- <inertial>
+              <mass value="0.2"/>
+              <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+              <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
+            </inertial> -->
+            <collision name="${name}_collision">
+                 <origin xyz="0 0 0" rpy="1.57 0 0"/>
+              <geometry>
+                <box size="0.05 0.05 0.3"/>
+              </geometry>
+            </collision>
+            <visual name="${name}_visual">
+                <origin xyz="0 0 0" rpy="1.57 0 0"/>
+                <geometry>
+                <box size="0.05 0.05 0.3"/>
+                </geometry>
+                <material name="green">
+                  <color rgba="0 1 0 1"/>
+                </material>
+            </visual>
+        </link>
+    </macro>
+
+    <macro name="joint_chassis_thigh" params="name child origin_xyz">
+      <joint name="${name}" type="revolute">
+        <origin rpy="0 0 0" xyz="${origin_xyz}"/>
+        <child link="${child}"/>
+        <parent link="link_chassis"/>
+        <axis rpy="0 0 0" xyz="0 1 0"/>
+        <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5"/>
+        <!-- <joint_properties damping="1.0" friction="1.0"/> -->
+      </joint>
+    </macro>
+
+    <macro name="joint_thigh_forearm" params="name child parent origin_xyz">
+      <joint name="${name}" type="revolute">
+        <origin rpy="0 0 0" xyz="${origin_xyz}"/>
+        <child link="${child}"/>
+        <parent link="${parent}"/>
+        <axis rpy="0 0 0" xyz="0 1 0"/>
+        <limit effort="1000.0" lower="-3.14" upper="3.14" velocity="0.5"/>
+        <!-- <joint_properties damping="1.0" friction="1.0"/> -->
+      </joint>
+    </macro>
+
+</robot>

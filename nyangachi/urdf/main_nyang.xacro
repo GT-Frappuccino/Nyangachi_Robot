@@ -1,9 +1,13 @@
 <?xml version="1.0" ?>
 <robot name="nyangachi" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <xacro:include filename="$(find nyangachi)/urdf/materials.xacro" />
+  <!-- <xacro:include filename="$(find nyangachi)/urdf/materials.xacro" /> -->
+  <xacro:include filename="$(find nyangachi)/urdf/variables.xacro" />
+
   <!-- <xacro:include filename="$(find nyangachi)/urdf/m2wr.gazebo" /> -->
   <xacro:include filename="$(find nyangachi)/urdf/macros.xacro" />
+  
+
 
   <link name="link_chassis">
     <!-- pose and inertial -->
@@ -55,24 +59,24 @@
 
   </link>
 
-    <xacro:joint_chassis_thigh name="joint_fr_thigh" child="link_fr_thigh" origin_xyz="0.3 0.15 0.04" />
-    <xacro:link_thigh name="link_fr_thigh" />
-    <!-- <xacro:joint_thigh_forearm name="joint_fr_forearm" child="link_fr_forearm" parent="link_fr_thigh" origin_xyz="0 0 0.3" />
-    <xacro:link_forearm name="link_fr_forearm" /> -->
+    <xacro:joint_chassis_thigh name="joint_fr_thigh" child="link_fr_thigh" origin_xyz="${0.25-thigh_xlength/2} ${0.15+thigh_ylength/2} 0" />
+    <xacro:link_thigh name="link_fr_thigh" origin_xyz = "0 0 ${-thigh_length/2}" />
+    <xacro:joint_thigh_forearm name="joint_fr_forearm" child="link_fr_forearm" parent="link_fr_thigh" origin_xyz="0 ${forearm_ylength} ${-thigh_length}" />
+    <xacro:link_forearm name="link_fr_forearm" origin_xyz = "0 0 ${-forearm_length/2}" />
 
-    <xacro:joint_chassis_thigh name="joint_fl_thigh" child="link_fl_thigh" origin_xyz="0.3 -0.15 0.04" />
-    <xacro:link_thigh name="link_fl_thigh" />
-    <!-- <xacro:joint_thigh_forearm name="joint_fl_forearm" child="link_fl_forearm" parent="link_fl_thigh" origin_xyz="0 0 0.3" />
-    <xacro:link_forearm name="link_fl_forearm" /> -->
+    <xacro:joint_chassis_thigh name="joint_fl_thigh" child="link_fl_thigh" origin_xyz="${0.25-thigh_xlength/2} -${0.15+thigh_ylength/2} 0" />
+    <xacro:link_thigh name="link_fl_thigh" origin_xyz = "0 0 ${-thigh_length/2}"/>
+    <xacro:joint_thigh_forearm name="joint_fl_forearm" child="link_fl_forearm" parent="link_fl_thigh" origin_xyz="0 -${forearm_ylength} ${-thigh_length}" />
+    <xacro:link_forearm name="link_fl_forearm" origin_xyz = "0 0 ${-forearm_length/2}"/>
 
-    <xacro:joint_chassis_thigh name="joint_br_thigh" child="link_br_thigh" origin_xyz="-0.3 -0.15 0.04" />
-    <xacro:link_thigh name="link_br_thigh" />
-    <!-- <xacro:joint_thigh_forearm name="joint_br_forearm" child="link_br_forearm" parent="link_br_thigh" origin_xyz="0 0 0.3" />
-    <xacro:link_forearm name="link_br_forearm" /> -->
+    <xacro:joint_chassis_thigh name="joint_br_thigh" child="link_br_thigh" origin_xyz="-${0.25-thigh_xlength/2} ${0.15+thigh_ylength/2} 0.0" />
+    <xacro:link_thigh name="link_br_thigh" origin_xyz = "0 0 ${-thigh_length/2}"/>
+    <xacro:joint_thigh_forearm name="joint_br_forearm" child="link_br_forearm" parent="link_br_thigh" origin_xyz="0 ${forearm_ylength} ${-thigh_length}" />
+    <xacro:link_forearm name="link_br_forearm" origin_xyz = "0 0 ${-forearm_length/2}"/>
 
-    <xacro:joint_chassis_thigh name="joint_bl_thigh" child="link_bl_thigh" origin_xyz="-0.3 -0.15 0.04" />
-    <xacro:link_thigh name="link_bl_thigh" />
-    <!-- <xacro:joint_thigh_forearm name="joint_bl_forearm" child="link_bl_forearm" parent="link_bl_thigh" origin_xyz="0 0 0.3" />
-    <xacro:link_forearm name="link_bl_forearm" /> -->
+    <xacro:joint_chassis_thigh name="joint_bl_thigh" child="link_bl_thigh" origin_xyz="-${0.25-thigh_xlength/2} -${0.15+thigh_ylength/2} 0.0" />
+    <xacro:link_thigh name="link_bl_thigh" origin_xyz = "0 0 ${-thigh_length/2}"/>
+    <xacro:joint_thigh_forearm name="joint_bl_forearm" child="link_bl_forearm" parent="link_bl_thigh" origin_xyz="0 -${forearm_ylength} ${-thigh_length}" />
+    <xacro:link_forearm name="link_bl_forearm" origin_xyz = "0 0 ${-forearm_length/2}"/>
 
 </robot>

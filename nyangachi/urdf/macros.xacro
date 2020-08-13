@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
-<robot>
-    <macro name="link_forearm" params="name">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- <xacro:include filename="$(find nyangachi)/urdf/materials.xacro" /> -->
+    <xacro:include filename="$(find nyangachi)/urdf/variables.xacro" />
+
+
+    <macro name="link_forearm" params="name origin_xyz">
         <link name="${name}">
             <!-- <inertial>
               <mass value="0.2"/>
@@ -8,16 +12,18 @@
               <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
             </inertial> -->
             <collision name="${name}_collision">
-                <origin xyz="0 0 0" rpy="3.14 0 0"/>
+                <!-- <origin xyz="0 0 0" rpy="3.14 0 0"/> -->
+                <origin xyz="${origin_xyz}" rpy="0 0 0"/>
               <geometry>
-                <!-- <box size="0.05 0.05 0.3"/> -->
-                <mesh filename="stl/Forearm.stl" scale="1 1 1"/>
+                <box size="0.05 ${forearm_ylength} ${forearm_length}"/>
+                <!-- <mesh filename="~/simulation_ws/src/Nyangachi_Robot/stl/Forearm_ascii.stl" scale="1 1 1"/> -->
               </geometry>
             </collision>
             <visual name="${name}_visual">
-                <origin xyz="0 0 0" rpy="3.14 0 0"/>
+                <!-- <origin xyz="0 0 0" rpy="3.14 0 0"/> -->
+                <origin xyz="${origin_xyz}" rpy="0 0 0"/>
                 <geometry>
-                <box size="0.05 0.05 0.3"/>
+                <box size="${forearm_xlength} ${forearm_ylength} 0.3"/>
                 </geometry>
                 <material name="blue">
                   <color rgba="0 0 1 1"/>
@@ -26,7 +32,7 @@
         </link>
     </macro>
 
-   <macro name="link_thigh" params="name">
+   <macro name="link_thigh" params="name origin_xyz">
         <link name="${name}">
             <!-- <inertial>
               <mass value="0.2"/>
@@ -34,16 +40,18 @@
               <inertia ixx="0.000526666666667" ixy="0" ixz="0" iyy="0.000526666666667" iyz="0" izz="0.001"/>
             </inertial> -->
             <collision name="${name}_collision">
-                 <origin xyz="0 0 0" rpy="1.57 0 0"/>
+                 <origin xyz="${origin_xyz}" rpy="0 0 0"/>
+                 <!-- <origin xyz="0 0 0" rpy="1.57 0 0"/> -->
               <geometry>
-                <mesh filename="stl/Thigh.stl" scale="1 1 1"/>
-                <!-- <box size="0.05 0.05 0.3"/> -->
+                <!-- <mesh filename="~/simulation_ws/src/Nyangachi_Robot/stl/Thigh_ascii.stl" scale="1 1 1"/> -->
+                <box size="${thigh_xlength} ${thigh_ylength} ${thigh_length}"/>
               </geometry>
             </collision>
             <visual name="${name}_visual">
-                <origin xyz="0 0 0" rpy="1.57 0 0"/>
+                <origin xyz="${origin_xyz}" rpy="0 0 0"/>
+                <!-- <origin xyz="0 0 0" rpy="1.57 0 0"/> -->
                 <geometry>
-                <box size="0.05 0.05 0.3"/>
+                <box size="${thigh_xlength} ${thigh_ylength} 0.3"/>
                 </geometry>
                 <material name="green">
                   <color rgba="0 1 0 1"/>

@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+ <!-- variables -->
+    <xacro:property name="thigh_length" value="0.225" />
+    <xacro:property name="forearm_length" value="0.225" />
+    <xacro:property name="thigh_xlength" value="0.075" />
+    <xacro:property name="thigh_ylength" value="0.04" />
+    <xacro:property name="forearm_xlength" value="0.075" />
+    <xacro:property name="forearm_ylength" value="0.04" />
+
+</robot>

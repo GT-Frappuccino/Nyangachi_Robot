@@ -1,0 +1,6 @@
+[submodule "nyangachi/test/nyangachi/test/Adafruit_Python_PCA9685"]
+	path = nyangachi/test/nyangachi/test/Adafruit_Python_PCA9685
+	url = https://github.com/adafruit/Adafruit_Python_PCA9685
+[submodule "nyangachi/servo_test/Adafruit"]
+	path = nyangachi/servo_test/Adafruit
+	url = https://github.com/adafruit/Adafruit_Python_PCA9685

@@ -59,22 +59,22 @@ while True:
         if (confidence < 100):
             id = names[id]
             confidence = "  {0}%".format(round(100 - confidence))
-            print "Hi there!" #speaker
-            time.sleep(3)
+            print ("Hi there!") #speaker
+            time.sleep(1)
         else:
-            id = "unknown"
+            id = ("unknown")
             confidence = "  {0}%".format(round(100 - confidence))
-            time.sleep(3)
+            time.sleep(1)
         
         cv2.putText(img, str(id), (x+5,y-5), font, 1, (255,255,255), 2)
         cv2.putText(img, str(confidence), (x+5,y+h-5), font, 1, (255,255,0), 1)
     if id == "unknown":
         # if face_id == 0:
             # cv2.imshow('camera',img)
-        print "You are stranger" #speaker
-        print "You need to save your face" #speaker
+        print ("You are stranger") #speaker
+        print ("You need to save your face") #speaker
         #face_detector = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
-        print "Look at the camera" #speaker
+        print ("Look at the camera") #speaker
         count = 0
         while True:
             #ret, img = cam.read()
@@ -86,7 +86,7 @@ while True:
                 #Save the captured image into the datasets folder
                 cv2.imwrite("dataset/User." + str(face_id) + '.' + str(count) + ".jpg", gray[y:y+h,x:x+w])
                 cv2.imshow('image', img)
-                cv2.destroyWindow()
+                cv2.destroyWindow('image')
             #k = cv2.waitKey(100) & 0xff # Press 'ESC' for exiting video
             #if k == 27:
                 #break
@@ -107,14 +107,14 @@ while True:
                     #faceSamples.append(img_numpy[y:y+h,x:x+w])
                     #ids.append(id1)
             #return faceSamples,ids
-        print "Training faces..." #speaker
+        print ("Training faces...") #speaker
         faces3,ids = getImagesAndLabels(path)
         recognizer.train(faces3, np.array(ids))
         recognizer.write('trainer/trainer'+ str(face_id) +'.yml')
         recognizer.read('trainer/trainer'+ str(face_id) +'.yml')
         print("{0} faces trained.".format(len(np.unique(ids))))
         face_id = face_id + 1
-        print "It's done!" #speaker
+        print ("It's done!") #speaker
     cv2.imshow('camera',img) 
     k = cv2.waitKey(10) & 0xff # Press 'ESC' for exiting video
     if k == 27:

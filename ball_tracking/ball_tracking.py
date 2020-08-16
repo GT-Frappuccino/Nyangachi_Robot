@@ -5,6 +5,8 @@ import numpy as np
 import imutils
 import cv2
 
+before_x = 0
+before_y = 0
 # construct the argument parse and parse the arguments
 #ap = argparse.ArgumentParser()
 #ap.add_argument("-v", "--video",
@@ -81,7 +83,21 @@ while True:
 				(0, 255, 255), 2)
 			cv2.circle(frame, center, 5, (0, 0, 255), -1)
 			mapObjectPosition(int(x), int(y))
- 
+			if (before_x - int(x) > 0):
+				print("Left")
+			elif (before_x - int(x) < 0):
+				print("Right")
+			else:
+				print("Same")
+			if (before_y - int(y) > 0):
+				print("Down")
+			elif (before_y - int(y) < 0):
+				print("Up")
+			else:
+				print("Same")
+			before_x = int(x)
+			before_y = int(y)
+			
 	# update the points queue
 	#pts.appendleft(center)
 	

@@ -5,14 +5,14 @@ import math
 '''
 ### check PWM Servo Driver channel number 
 '''
-fr_forearm_channel_num = 2
-fr_thigh_channel_num = 1
-fl_forearm_channel_num = 12
-fl_thigh_channel_num = 11
-br_forearm_channel_num = 4
-br_thigh_channel_num = 5
-bl_forearm_channel_num = 6
-bl_thigh_channel_num = 8
+fr_forearm_channel_num = 5
+fr_thigh_channel_num = 4
+fl_forearm_channel_num = 10
+fl_thigh_channel_num = 6
+br_forearm_channel_num = 13
+br_thigh_channel_num = 12
+bl_forearm_channel_num = 15
+bl_thigh_channel_num = 14
 
 
 class NyangMove(object):
@@ -28,9 +28,9 @@ class NyangMove(object):
 
         self.is_real = is_real
 
-        self.step_length = 0.01
+        self.step_length = 0.02
         self.velocity = 0.01 # (m/s)
-        self.step_num = 5 # step number in 1 step_length
+        self.step_num = 15 # step number in 1 step_length
 
         # to calculate angle of servos (m)
         self.stand_height = 0.085 # calculate: 0.0836
@@ -42,7 +42,7 @@ class NyangMove(object):
         self.FR_FOREARM_INIT_ANGLE = 84
         self.FR_THIGH_INIT_ANGLE = 90
         self.FL_FOREARM_INIT_ANGLE = 101
-        self.FL_THIGH_INIT_ANGLE = 90
+        self.FL_THIGH_INIT_ANGLE = 100
         self.BR_FOREARM_INIT_ANGLE = 0
         self.BR_THIGH_INIT_ANGLE = 0
         self.BL_FOREARM_INIT_ANGLE = 0
@@ -496,32 +496,110 @@ def stand(is_real):
 
     print("stand\n")
 
+def step_init(is_real)
+    nyang_object = NyangMove(is_real)
+    nyang_object.inverse_kinematics(0, 0, "fl")
+    nyang_object.inverse_kinematics(0, 0, "br")
+    nyang_object.inverse_kinematics(0, 0, "fr")
+    nyang_object.inverse_kinematics(0, 0, "bl")
+    time.sleep(0.01)
+
 def step(is_real):
     nyang_object = NyangMove(is_real)
     step_up_length = 0.03
     leg_position = "fl"
+
     for x in range(nyang_object.step_num):
         nyang_object.inverse_kinematics(0, x*step_up_length/nyang_object.step_num, leg_position)
+        time.sleep(0.01)
     for x in range(nyang_object.step_num):
         nyang_object.inverse_kinematics(0, step_up_length - x*step_up_length/nyang_object.step_num, leg_position)
+        time.sleep(0.01)
 
-def run(is_real):
+def walk_init(is_real):
     nyang_object = NyangMove(is_real)
-    leg_position = "fl"
-    run_up_length = 0.02
+    walk_up_length = 0.02
+    
+    # start with fl foreward
+    nyang_object.inverse_kinematics(nyang_object.step_length, 0, "fl") # foreward
+    nyang_object.inverse_kinematics(0, 0, "bl") # 0, 0
+    nyang_object.inverse_kinematics(-nyang_object.step_length, 0, "fr") # backward
+    nyang_object.inverse_kinematics(0, walk_up_length, "br") # 0, up
+    time.sleep(0.01)
 
-    # forward to backward
+def walk(is_real):
+    nyang_object = NyangMove(is_real)
+    walk_up_length = 0.02
+
+    # fl foreward to backward
     for x in range(nyang_object.step_num):
-        nyang_object.inverse_kinematics(nyang_object.step_length - x*nyang_object.step_length/nyang_object.step_num, 0, leg_position)
+        nyang_object.inverse_kinematics(nyang_object.step_length - x*nyang_object.step_length/nyang_object.step_num, 0, "fl")
+        nyang_object.inverse_kinematics( -x*nyang_object.step_length/nyang_object.step_num, 0, "bl")
+        nyang_object.inverse_kinematics(-nyang_object.step_length + x*nyang_object.step_length/nyang_object.step_num, x*walk_up_length/nyang_object.step_num, "fr")
+        nyang_object.inverse_kinematics(x*nyang_object.step_length/nyang_object.step_num, walk_up_length - x*walk_up_length/nyang_object.step_num, "br")
+        time.sleep(0.01)
     for x in range(nyang_object.step_num):
-        nyang_object.inverse_kinematics(-x*nyang_object.step_length/nyang_object.step_num, 0, leg_position)
+        nyang_object.inverse_kinematics(-x*nyang_object.step_length/nyang_object.step_num, 0, "fl")
+        nyang_object.inverse_kinematics(-nyang_object.step_length + x*nyang_object.step_length/nyang_object.step_num, x*walk_up_length/nyang_object.step_num, "bl")
+        nyang_object.inverse_kinematics(x*nyang_object.step_length/nyang_object.step_num, walk_up_length - x*walk_up_length/nyang_object.step_num, "fr")
+        nyang_object.inverse_kinematics(nyang_object.step_length - x*nyang_object.step_length/nyang_object.step_num, 0, "br")
+        time.sleep(0.01)
     
     # backward to forward
     for x in range(nyang_object.step_num):
-        nyang_object.inverse_kinematics(-nyang_object.step_length + x*nyang_object.step_length/nyang_object.step_num, x*run_up_length/nyang_object.step_num, leg_position)
+        nyang_object.inverse_kinematics(-nyang_object.step_length + x*nyang_object.step_length/nyang_object.step_num, x*walk_up_length/nyang_object.step_num, "fl")
+        nyang_object.inverse_kinematics(x*nyang_object.step_length/nyang_object.step_num, walk_up_length - x*walk_up_length/nyang_object.step_num, "bl")
+        nyang_object.inverse_kinematics(nyang_object.step_length - x*nyang_object.step_length/nyang_object.step_num, 0, "fr")
+        nyang_object.inverse_kinematics(-x*nyang_object.step_length/nyang_object.step_num, 0, "br")
+        time.sleep(0.01)
     for x in range(nyang_object.step_num):
-        nyang_object.inverse_kinematics(x*nyang_object.step_length/nyang_object.step_num, run_up_length - x*run_up_length/nyang_object.step_num, leg_position)
+        nyang_object.inverse_kinematics(x*nyang_object.step_length/nyang_object.step_num, walk_up_length - x*walk_up_length/nyang_object.step_num, "fl")
+        nyang_object.inverse_kinematics(nyang_object.step_length - x*nyang_object.step_length/nyang_object.step_num, 0, "bl")
+        nyang_object.inverse_kinematics(-x*nyang_object.step_length/nyang_object.step_num, 0, "fr")
+        nyang_object.inverse_kinematics(-nyang_object.step_length + x*nyang_object.step_length/nyang_object.step_num, x*walk_up_length/nyang_object.step_num, "br")
+        time.sleep(0.01)
+
+
+def run_init(is_real): # for run setup
+    nyang_object = NyangMove(is_real)
+    nyang_object.inverse_kinematics(nyang_object.step_length, 0, "fl")
+    nyang_object.inverse_kinematics(nyang_object.step_length, 0, "br")
+    nyang_object.inverse_kinematics(-nyang_object.step_length, 0, "fr")
+    nyang_object.inverse_kinematics(-nyang_object.step_length, 0, "bl")
+    time.sleep(0.01)
     
+def run(is_real):
+    nyang_object = NyangMove(is_real)
+    run_up_length = 0.02
+
+    # forward to backward fl & br
+    for x in range(nyang_object.step_num):
+        nyang_object.inverse_kinematics(nyang_object.step_length - x*nyang_object.step_length/nyang_object.step_num, 0, "fl")
+        nyang_object.inverse_kinematics(nyang_object.step_length - x*nyang_object.step_length/nyang_object.step_num, 0, "br")
+        nyang_object.inverse_kinematics(-nyang_object.step_length + x*nyang_object.step_length/nyang_object.step_num, x*run_up_length/nyang_object.step_num, "fr")
+        nyang_object.inverse_kinematics(-nyang_object.step_length + x*nyang_object.step_length/nyang_object.step_num, x*run_up_length/nyang_object.step_num, "bl")
+        time.sleep(0.01)
+    for x in range(nyang_object.step_num):
+        nyang_object.inverse_kinematics(-x*nyang_object.step_length/nyang_object.step_num, 0, "fl")
+        nyang_object.inverse_kinematics(-x*nyang_object.step_length/nyang_object.step_num, 0, "br")
+        nyang_object.inverse_kinematics(x*nyang_object.step_length/nyang_object.step_num, run_up_length - x*run_up_length/nyang_object.step_num, "fr")
+        nyang_object.inverse_kinematics(x*nyang_object.step_length/nyang_object.step_num, run_up_length - x*run_up_length/nyang_object.step_num, "bl")
+        time.sleep(0.01)
+    
+    # backward to forward
+    for x in range(nyang_object.step_num):
+        nyang_object.inverse_kinematics(-nyang_object.step_length + x*nyang_object.step_length/nyang_object.step_num, x*run_up_length/nyang_object.step_num, "fl")
+        nyang_object.inverse_kinematics(-nyang_object.step_length + x*nyang_object.step_length/nyang_object.step_num, x*run_up_length/nyang_object.step_num, "br")
+        nyang_object.inverse_kinematics(nyang_object.step_length - x*nyang_object.step_length/nyang_object.step_num, 0, "fr")
+        nyang_object.inverse_kinematics(nyang_object.step_length - x*nyang_object.step_length/nyang_object.step_num, 0, "bl")
+        time.sleep(0.01)
+    for x in range(nyang_object.step_num):
+        nyang_object.inverse_kinematics(x*nyang_object.step_length/nyang_object.step_num, run_up_length - x*run_up_length/nyang_object.step_num, "fl")
+        nyang_object.inverse_kinematics(x*nyang_object.step_length/nyang_object.step_num, run_up_length - x*run_up_length/nyang_object.step_num, "br")
+        nyang_object.inverse_kinematics(-x*nyang_object.step_length/nyang_object.step_num, 0, "fr")
+        nyang_object.inverse_kinematics(-x*nyang_object.step_length/nyang_object.step_num, 0, "bl")
+        time.sleep(0.01)
+
 ##### custom function end #####
 
 if __name__ == "__main__":
@@ -548,10 +626,10 @@ if __name__ == "__main__":
     nyang_object = NyangMove(is_real)
     #nyang_object.input_fl_thigh_test()
     while True:
-        input_leg_position = raw_input("Type leg_positon: fr or fl??")
-        input_x = float(raw_input("Type end_x to move to"))
-        input_z = float(raw_input("Type end_z to move to"))
-        nyang_object.inverse_kinematics(input_x, input_z, input_leg_position)
+        nyang_object.input_br_forearm_test()
+        # nyang_object.input_br_thigh_test()
+        # nyang_object.input_bl_forearm_test()
+        # nyang_object.input_bl_thigh_test()
 
 '''        input_thigh_angle = int(raw_input("Type thigh_angle to move to"))
         input_forearm_angle = int(raw_input("Type forearm_angle to move to"))

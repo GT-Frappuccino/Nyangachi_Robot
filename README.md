@@ -8,6 +8,6 @@
 5. 핸즈실에서 멀어지면 알려주기(비콘, 스피커) / ibeacon
 
 * " 이규리
-1. google speech-to-text api 이용한 음성인식 / voicerecog
+1. OpenVokaturi 이용한 감정인식 (via voice)/ voicerecog
 2. 터치하면 울음소리 / touch_sensor
 3. 배터리 낮을 시 경고 / battery_alarm
